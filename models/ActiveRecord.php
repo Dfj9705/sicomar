@@ -152,7 +152,7 @@ class ActiveRecord {
         $resultado = self::$db->query($query);
         $respuesta = $resultado->fetchAll(PDO::FETCH_ASSOC);
         foreach ($respuesta as $value) {
-            $data[] = array_change_key_case($value); 
+            $data[] = array_change_key_case( array_map( 'utf8_encode', $value) ); 
         }
         $resultado->closeCursor();
         return $data;
