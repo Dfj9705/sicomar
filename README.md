@@ -1,2 +1,2 @@
-# DEMO MINDEF MVC
-Base para programación MVC con php del Ministerio de la Defensa
+# SICOMAR
+Aplicación para el control de millas navegadas de la MADENA

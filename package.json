@@ -1,7 +1,7 @@
 {
-  "name": "demo-app",
+  "name": "sicomar",
   "version": "1.0.0",
-  "description": "Aplicacion MVC demo",
+  "description": "SICOMAR",
   "main": "index.js",
   "scripts": {
     "build": "webpack",

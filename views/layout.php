@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="build/js/app.js"></script>
-    <link rel="shortcut icon" href="<?= asset('images/cit.png') ?>" type="image/x-icon">
+    <link rel="shortcut icon" href="<?= asset('images/madena.png') ?>" type="image/x-icon">
     <link rel="stylesheet" href="<?= asset('build/styles.css') ?>">
-    <title>DemoApp</title>
+    <title>SICOMAR</title>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark  bg-dark">
@@ -17,8 +17,8 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <a class="navbar-brand" href="/ejemplo/">
-                <img src="<?= asset('./images/cit.png') ?>" width="35px'" alt="cit" >
-                Aplicaciones
+                <img src="<?= asset('./images/madena.png') ?>" width="35px'" alt="cit" >
+                SICOMAR
             </a>
             <div class="collapse navbar-collapse" id="navbarToggler">
                 
@@ -27,21 +27,56 @@
                         <a class="nav-link" aria-current="page" href="/ejemplo/"><i class="bi bi-house-fill me-2"></i>Inicio</a>
                     </li>
   
-                    <div class="nav-item dropdown " >
-                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                            <i class="bi bi-gear me-2"></i>Dropdown
-                        </a>
-                        <ul class="dropdown-menu  dropdown-menu-dark "id="dropwdownRevision" style="margin: 0;">
-                            <!-- <h6 class="dropdown-header">Información</h6> -->
-                            <li>
-                                <a class="dropdown-item nav-link text-white " href="/aplicaciones/nueva"><i class="ms-lg-0 ms-2 bi bi-plus-circle me-2"></i>Subitem</a>
-                            </li>
-                        
+                    <div class="nav-item dropdown ">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                        <i class="bi bi-shield-shaded me-2"></i>Operaciones
+                    </a>
+                    <ul class="dropdown-menu  dropdown-menu-dark nav-index " id="dropwdownRevision">
+                        <!-- <h6 class="dropdown-header">Información</h6> -->
+                        <li><a class="dropdown-item nav-link text-white " href="#"><i class="ms-lg-0 ms-2 bi bi-file-earmark-text me-2"></i>Hoja de zarpe</a></li>
+                        <li><a class="dropdown-item nav-link text-white " href="#"><i class="ms-lg-0 ms-2 bi bi-card-list me-2"></i>Ver zarpes</a></li>
+                        <li><a class="dropdown-item nav-link text-white " href="#"> <i class="ms-lg-0 ms-2 bi bi-activity me-2"></i>Reporte de patrulla</a></li>
+                        <li><a class="dropdown-item nav-link text-white " href="#"><i class="ms-lg-0 ms-2 bi bi-person-check me-2"></i>Validar reporte</a></li>
+                        <li><a class="dropdown-item nav-link text-white " href="#"><i class="ms-lg-0 ms-2 bi bi-ui-checks me-2"></i>Validar operación</a></li>
+                        <li><a class="dropdown-item nav-link text-white " href="#"><i class="ms-lg-0 ms-2 bi bi-globe-americas me-2"></i>Internacionales</a></li>
+                        <li><a class="dropdown-item nav-link text-white " href="#"><i class="ms-lg-0 ms-2 bi bi-globe-americas me-2"></i>Validar internacional</a></li>  
+                    </ul>
+                </div> 
+                <div class="nav-item dropdown ">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                        <i class="bi bi-file-earmark-bar-graph me-2"></i>Reportes
+                    </a>
+                    <ul class="dropdown-menu  dropdown-menu-dark nav-index " id="dropwdownRevision">
+                        <!-- <h6 class="dropdown-header">Información</h6> -->
+                        <li><a class="dropdown-item nav-link text-white " href="#"><i class="ms-lg-0 ms-2 bi bi-file-earmark-person me-2"></i>Perfil operativo</a></li>
+                        <li><a class="dropdown-item nav-link text-white " href="#"> <i class="ms-lg-0 ms-2 bi bi-graph-up-arrow me-2"></i>Estadísticas</a></li>
+                        <li><a class="dropdown-item nav-link text-white " href="#"> <i class="ms-lg-0 ms-2 bi bi-file-earmark-post me-2"></i>Perfil de Unidad</a></li>
                     
-                        
-                        </ul>
-                    </div> 
-
+                    
+                
+                    
+                    </ul>
+                </div> 
+                <div class="nav-item dropdown ">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                        <i class="bi bi-gear-wide-connected me-2"></i>Administración
+                    </a>
+                    <ul class="dropdown-menu  dropdown-menu-dark nav-index " id="dropwdownRevision">
+                        <!-- <h6 class="dropdown-header">Información</h6> -->
+                        <li><a class="dropdown-item nav-link text-white " href="#"><i class="ms-lg-0 ms-2 bi bi-boxes me-2"></i>Insumos</a></li>
+                        <li><a class="dropdown-item nav-link text-white " href="#"> <i class="ms-lg-0 ms-2 bi bi-diagram-2 me-2"></i>Operaciones</a></li>
+                        <li><a class="dropdown-item nav-link text-white " href="#"> <i class="ms-lg-0 ms-2 bi bi-broadcast me-2"></i>Medios</a></li>
+                        <li><a class="dropdown-item nav-link text-white " href="#"> <i class="ms-lg-0 ms-2 bi bi-bullseye me-2"></i>Receptores</a></li>
+                        <li><a class="dropdown-item nav-link text-white " href="#"> <i class="ms-lg-0 ms-2 bi bi-node-plus me-2"></i>Tipos de Embarcaciones</a></li>
+                        <li><a class="dropdown-item nav-link text-white " href="#"> <i class="ms-lg-0 ms-2 bi bi-diagram-3 me-2"></i>Embarcaciones</a></li>
+                        <li><a class="dropdown-item nav-link text-white " href="#"> <i class="ms-lg-0 ms-2 bi bi-gear me-2"></i>Motores</a></li>
+                        <li><a class="dropdown-item nav-link text-white " href="#"> <i class="ms-lg-0 ms-2 bi bi-gear me-2"></i>Unidades de Medida</a></li>
+                      
+                      
+                   
+                       
+                    </ul>
+                </div> 
                 </ul> 
                 <div class="col-lg-1 d-grid mb-lg-0 mb-2">
                     <!-- Ruta relativa desde el archivo donde se incluye menu.php -->
