@@ -2,8 +2,6 @@
 namespace Controllers;
 use Model\Motores;
 use MVC\Router;
-
-
 class MotoresController{
     public static function index(Router $router){
         $busqueda=  Motores::fetchArray('SELECT * FROM codemar_embarcaciones');
@@ -12,17 +10,18 @@ class MotoresController{
 
         ]);
     }
-
     public function guardarAPI(){
         getHeadersApi();
+        // echo json_encode("Hola Humano");
+        // exit;
+    
 
         try {
-            $motores = new Motores ($_POST);
+
+            $motores = new Motores($_POST);
             $dato = $motores->mot_serie;
-            $dato_embarcacion= $motores->mot_embarcaciones;
-            $existe_embarcacion = Motores::fetchArray("SELECT * FROM codemar_motores  where mot_embarcaciones = '$dato_embarcacion' and mot_situacion = 1 ");
             $existe = Motores::fetchArray("SELECT * FROM codemar_motores where mot_serie = '$dato' and mot_situacion = 1 ");
-            if (count($existe)>0 || count($existe_embarcacion)>0){
+            if (count($existe)>0){
                echo json_encode([
                    "mensaje" => "El registro ya existe.",
                    "codigo" => 2,
@@ -31,6 +30,7 @@ class MotoresController{
             }
              
             $resultado = $motores->crear();
+ 
             // echo json_encode($resultado['resultado']);
 
             if($resultado['resultado'] == 1){
@@ -73,11 +73,19 @@ class MotoresController{
     public function modificarAPI(){
         getHeadersApi();
        try {
-            // $_POST["desc"] = strtoupper($_POST["desc"]);
-            $motores = new Motores($_POST);
-            $valor = $motores->mot_serie;
-            $existe = Motores::fetchArray("SELECT * from codemar_motores where mot_situacion = 1 AND mot_serie = '$valor'");
 
+        // $cambio = new Receptores($_POST);
+        // echo json_encode($cambio);
+        // exit;
+        
+$mot_id = $_POST['mot_id'];
+$valor = $_POST['mot_serie'];
+
+
+
+
+$existe = Motores::fetchArray("SELECT * FROM codemar_motores where mot_serie = '$valor' and mot_situacion = 1 ");
+             
             if (count($existe)>0){
                echo json_encode([
                    "mensaje" => "El valor no se modificó.",
@@ -86,9 +94,14 @@ class MotoresController{
                exit;
             }
     
-            $resultado = $motores->crear();
-    
-            if($resultado['resultado'] == 1){
+            // $cambio =  new Receptores ([
+            //     'rec_id' => $id,
+            //     'rec_desc' => $valor,
+            //     'rec_situacion' => "1" 
+            // ]);
+            $cambio = new Motores($_POST);
+            $cambiar = $cambio-> guardar();
+            if($cambiar){
                 echo json_encode([
                     "mensaje" => "El registro se guardo",
                     "codigo" => 1,
@@ -99,7 +112,7 @@ class MotoresController{
                     "mensaje" => "Ocurrió un error",
                     "codigo" => 0,
                 ]);
-    
+
             }
         } catch (Exception $e) {
             echo json_encode([
@@ -109,52 +122,53 @@ class MotoresController{
                 "codigo" => 4,
             ]);
         }
-    }
+    }//fin de 
 
-    public function eliminarAPI(){
+    public static function eliminarAPI(){
         getHeadersApi();
-        $_POST['mot_situacion'] = 0;
-        $motores = new Motores($_POST);
-        
-        $resultado = $motores->eliminar();
 
-        if($resultado['resultado'] == 1){
-            echo json_encode([
-                "resultado" => 1
-            ]);
-            
-        }else{
-            echo json_encode([
-                "resultado" => 0
-            ]);
+
+        
+
+//         $id = $_POST['id'];
+// $valor = $_POST['rec_desc'];
+try{
+
+$motores = Motores::find($_POST['mot_id']);
+$motores->mot_situacion = 0;
+$resultado= $motores->actualizar();
+
+
+if($resultado['resultado'] == 1){
+    echo json_encode([
+        "mensaje" => "Se modifico la operación exitosamente.",
+        "codigo" => 1,
+    ]);
+    exit;
+    
+}else{
+    echo json_encode([
+        "mensaje" => "Ocurrió  un error.",
+        "codigo" => 0,
+    ]);
+    exit;
+
+}
+} catch (Exception $e) {
+echo json_encode([
+    "detalle" => $e->getMessage(),       
+    "mensaje" => "Ocurrió un error en base de datos",
+
+    "codigo" => 4,
+]);
+exit;
+
+        
 
         }
     }
 
-    // public function cambioSituacionAPI(){
-    //     getHeadersApi();
-        
-
-    // if ($_POST['situacion'] == 1){
-    //     $_POST['situacion'] = 2;
-    // }else{
-    //     $_POST['situacion'] = 1;
-
-    //     }
-    //     $usuarios = new Usuarios($_POST);
-    //     $resultado = $usuarios->guardar();
-    //     if($resultado['resultado'] == 1){
-    //         echo json_encode([
-    //             "resultado" => 1
-    //         ]);
-            
-    //     }else{
-    //         echo json_encode([
-    //             "resultado" => 2
-    //         ]);
-
-    //     }
-    // }
+   
 
 
 }

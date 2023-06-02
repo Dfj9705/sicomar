@@ -18,7 +18,7 @@ btnModificar.disabled = true;
 const guardarmotores = async (evento)=>{
     evento.preventDefault();
 
-    let formularioValido = validarFormulario(formMotores, ['id']);
+    let formularioValido = validarFormulario(formMotores, ['mot_id']);
     
     if (!formularioValido) {
         Toast.fire({
@@ -33,18 +33,15 @@ const guardarmotores = async (evento)=>{
     try {
         //Crear el cuerpo de la consulta
         const url = '/sicomar/API/motores/guardar'
-
         const body = new FormData(formMotores);
-        body.delete('id');
+        body.delete('mot_id');
         const headers = new Headers();
         headers.append("X-Requested-With", "fetch");
-
         const config = {
             method: 'POST',
             headers,
             body
         }
-
         const respuesta = await fetch(url, config);
         const data = await respuesta.json();
         // console.log(data);
@@ -235,9 +232,9 @@ const modificarmotores = async (evento) => {
 
 buscarmotores();
 
-window.asignarValores = (id, mot_serie) => {
-    formMotores.id.value = id;
-    formMotores.desc.value = mot_serie;
+window.asignarValores = (mot_id, mot_serie) => {
+    formMotores.mot_id.value = mot_id;
+    formMotores.mot_serie.value = mot_serie;
     btnModificar.parentElement.style.display = '';
     btnGuardar.parentElement.style.display = 'none';
     btnGuardar.disabled = true;
@@ -245,7 +242,7 @@ window.asignarValores = (id, mot_serie) => {
     divTabla.style.display = 'none'
 }
 
-window.eliminarRegistro = (id) => {
+window.eliminarRegistro = (mot_id) => {
     Swal.fire({
         title : 'Confirmación',
         icon : 'warning',
@@ -256,9 +253,9 @@ window.eliminarRegistro = (id) => {
         confirmButtonText: 'Si, eliminar'
     }).then( async (result) => {
         if(result.isConfirmed){
-            const url = '/sicomar/API/motores/eliminar'
+            const url = '/sicomar/API/motores/eliminar';
             const body = new FormData();
-            body.append('mot_id', id);
+            body.append('mot_id', mot_id);
             const headers = new Headers();
             headers.append("X-Requested-With", "fetch");
     
@@ -270,27 +267,48 @@ window.eliminarRegistro = (id) => {
     
             const respuesta = await fetch(url, config);
             const data = await respuesta.json();
-            const {resultado} = data;
+            const { mensaje, codigo, detalle } = data;
+
             // const resultado = data.resultado;
-    
-            if(resultado == 1){
-                Toast.fire({
-                    icon : 'success',
-                    title : 'Registro eliminado'
-                })
-    
-                formMotores.reset();
+            let icon = "";
+            switch (codigo) {
+                case 1:
+                    Toast.fire({
+                        icon : 'success',
+                        title : 'Registro eliminado'
+                    })
+                formMotores.reset;
                 buscarmotores();
-            }else{
-                Toast.fire({
-                    icon : 'error',
-                    title : 'Ocurrió un error'
-                })
+                 
+                   
+                    break;
+                case 2:
+                    icon = "warning"
+                   formMotores.reset();
+           
+    
+                    break;
+                case 3:
+                    icon = "error"
+                   formMotores.reset();
+                    break;
+                case 4:
+                    icon = "error"
+       
+                    console.log(detalle)
+                   formMotores.reset();
+                   
+    
+                    break;
+    
+                default:
+                    break;
             }
+         
+
         }
     })
 }
-
 
 
 formMotores.addEventListener('submit', guardarmotores);
