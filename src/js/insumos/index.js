@@ -3,21 +3,24 @@ import { validarFormulario, Toast } from "../funciones";
 import Datatable from "datatables.net-bs5";
 import { lenguaje } from "../lenguaje";
 import Swal from "sweetalert2";
-import { data } from "jquery";
+import { data, post } from "jquery";
+import { ViewContextType } from "fullcalendar";
 
-const formReceptores = document.getElementById("formReceptores");
+const formInsumos = document.getElementById("formInsumos");
 const btnGuardar = document.getElementById("btnGuardar");
 const btnModificar = document.getElementById("btnModificar");
 const divTabla = document.getElementById("divTabla");
-let tablaReceptores = new Datatable("#receptoresTabla");
+const tablaColores = document.getElementById("coloresTabla");
+let tablainsumos = new Datatable("#insumosTabla");
 
 btnModificar.parentElement.style.display = "none";
 btnGuardar.disabled = false;
 btnModificar.disabled = true;
 
-const guardarreceptores = async (evento) => {
+const guardarInsumos = async (evento) => {
   evento.preventDefault();
-  let formularioValido = validarFormulario(formReceptores, ["rec_id"]);
+
+  let formularioValido = validarFormulario(formInsumos, ["insumo_id"]);
 
   if (!formularioValido) {
     Toast.fire({
@@ -26,12 +29,12 @@ const guardarreceptores = async (evento) => {
     });
     return;
   }
+
   try {
     //Crear el cuerpo de la consulta
-    const url = "/sicomar/API/receptores/guardar";
-
-    const body = new FormData(formReceptores);
-    body.delete("rec_id");
+    const url = "/sicomar/API/insumos/guardar";
+    const body = new FormData(formInsumos);
+    body.delete("insumo_id");
     const headers = new Headers();
     headers.append("X-Requested-With", "fetch");
 
@@ -43,18 +46,19 @@ const guardarreceptores = async (evento) => {
 
     const respuesta = await fetch(url, config);
     const data = await respuesta.json();
+    console.log(data);
 
     const { mensaje, codigo, detalle } = data;
+    // const resultado = data.resultado;
     let icon = "";
     switch (codigo) {
       case 1:
         icon = "success";
-        formReceptores.reset();
-
+        formInsumos.reset();
+        buscarInsumos();
         break;
       case 2:
         icon = "warning";
-        formReceptores.reset();
 
         break;
       case 3:
@@ -63,7 +67,6 @@ const guardarreceptores = async (evento) => {
         break;
       case 4:
         icon = "error";
-        // console.log(data)
         console.log(detalle);
 
         break;
@@ -77,33 +80,31 @@ const guardarreceptores = async (evento) => {
       title: mensaje,
     });
 
-    buscarreceptores();
+    //buscarProducto();
   } catch (error) {
     console.log(error);
   }
 };
 
-const buscarreceptores = async (evento) => {
+const buscarInsumos = async (evento) => {
   evento && evento.preventDefault();
 
   try {
-    const url = "/sicomar/API/receptores/buscar";
+    const url = "/sicomar/API/insumos/buscar";
     const headers = new Headers();
     headers.append("X-Requested-With", "fetch");
 
     const config = {
       method: "GET",
-      headers,
     };
 
     const respuesta = await fetch(url, config);
     const data = await respuesta.json();
-
     // console.log(data);
 
-    tablaReceptores.destroy();
+    tablainsumos.destroy();
     let contador = 1;
-    tablaReceptores = new Datatable("#receptoresTabla", {
+    tablainsumos = new Datatable("#insumosTabla", {
       language: lenguaje,
       data: data,
       columns: [
@@ -113,19 +114,27 @@ const buscarreceptores = async (evento) => {
             return contador++;
           },
         },
-        { data: "rec_desc" },
-        // { data : 'situacion'},
+        { data: "insumo_desc" },
+
+        {
+          data: "insumo_color",
+          render: (data, type, row, meta) => {
+            return `<input type='color' value='${data}' disabled />`;
+          },
+        },
+
+        // { data: "insumo_unidad" },
 
         {
           data: "id",
           render: (data, type, row, meta) => {
-            return `<button class="btn btn-warning" onclick="asignarValores('${row.rec_id}', '${row.rec_desc}')">Modificar</button>`;
+            return `<button class="btn btn-warning" onclick="asignarValores('${row.insumo_id}', '${row.insumo_desc}','${row.insumo_color}')">Modificar</button>`;
           },
         },
         {
           data: "id",
           render: (data, type, row, meta) => {
-            return `<button class="btn btn-danger" onclick="eliminarRegistro('${row.rec_id}')">Eliminar</button>`;
+            return `<button class="btn btn-danger" onclick="eliminarRegistro('${row.insumo_id}')">Eliminar</button>`;
           },
         },
       ],
@@ -134,47 +143,45 @@ const buscarreceptores = async (evento) => {
     console.log(error);
   }
 };
-
-const modificarreceptores = async (evento) => {
-  evento.preventDefault();
-  let formularioValido = validarFormulario(formReceptores);
+const modificarInsumos = async (e) => {
+  e && e.preventDefault();
+  let formularioValido = validarFormulario(formInsumos);
   if (!formularioValido) {
     Toast.fire({
-      icon: "warning",
+      icon: "info",
       title: "Debe llenar todos los campos",
     });
     return;
   }
+
   try {
-    //Crear el cuerpo de la consulta
-    const url = "/sicomar/API/receptores/modificar";
-    const body = new FormData(formReceptores);
+    const url = "/sicomar/API/insumos/modificar";
+    const body = new FormData(formInsumos);
     const headers = new Headers();
     headers.append("X-Requested-With", "fetch");
+
     const config = {
       method: "POST",
-      headers,
       body,
+      headers,
     };
+
     const respuesta = await fetch(url, config);
     const data = await respuesta.json();
-
-    console.log(data);
-
+    // console.log(data);
     const { mensaje, codigo, detalle } = data;
-
-    // const resultado = data.resultado;
-
+    console.log(data["codigo"]);
     let icon = "";
     switch (codigo) {
       case 1:
         icon = "success";
-        formReceptores.reset();
-
+        formInsumos.reset();
+        // resetear()
+        buscarInsumos();
         break;
       case 2:
         icon = "warning";
-        formReceptores.reset();
+        formInsumos.reset();
 
         break;
       case 3:
@@ -184,44 +191,68 @@ const modificarreceptores = async (evento) => {
       case 4:
         icon = "error";
         console.log(detalle);
-
         break;
 
       default:
+        icon = "info";
         break;
     }
 
     Toast.fire({
-      icon: icon,
+      icon,
       title: mensaje,
     });
-
-    buscarreceptores();
+    buscarInsumos();
     btnModificar.parentElement.style.display = "none";
     btnGuardar.parentElement.style.display = "";
     btnGuardar.disabled = false;
     btnModificar.disabled = true;
-    formReceptores.reset();
-
+    formInsumos.reset();
     divTabla.style.display = "";
   } catch (error) {
     console.log(error);
   }
 };
 
-buscarreceptores();
+buscarInsumos();
+btnModificar.parentElement.style.display = "none";
+btnGuardar.parentElement.style.display = "";
+btnGuardar.disabled = false;
+btnModificar.disabled = true;
+divTabla.style.display = "";
 
-window.asignarValores = (id, rec_desc) => {
-  formReceptores.rec_id.value = id;
-  formReceptores.rec_desc.value = rec_desc;
+window.asignarValores = (insumo_id, insumo_desc, insumo_color) => {
+  // console.log(insumo_id);
+  // console.log(insumo_desc);
+  // console.log(insumo_color);
+  formInsumos.insumo_id.value = insumo_id;
+  formInsumos.insumo_desc.value = insumo_desc;
+  formInsumos.insumo_color.value = insumo_color;
   btnModificar.parentElement.style.display = "";
   btnGuardar.parentElement.style.display = "none";
   btnGuardar.disabled = true;
   btnModificar.disabled = false;
+
   divTabla.style.display = "none";
 };
+function NumText(string) {
+  //solo letras y numeros
+  var out = "";
+  //Se añaden las letras validas
+  var filtro =
+    "ÁÉÍÓÚáéíóúabcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ  "; //Caracteres validos
 
-window.eliminarRegistro = (rec_id) => {
+  for (var i = 0; i < string.length; i++)
+    if (filtro.indexOf(string.charAt(i)) != -1) out += string.charAt(i);
+  return out;
+}
+
+formInsumos.insumo_desc.addEventListener("keyup", (e) => {
+  let out = NumText(e.target.value);
+  e.target.value = out;
+});
+
+window.eliminarRegistro = (insumo_id) => {
   Swal.fire({
     title: "Confirmación",
     icon: "warning",
@@ -232,9 +263,9 @@ window.eliminarRegistro = (rec_id) => {
     confirmButtonText: "Si, eliminar",
   }).then(async (result) => {
     if (result.isConfirmed) {
-      const url = "/sicomar/API/receptores/eliminar";
+      const url = "/sicomar/API/insumos/eliminar";
       const body = new FormData();
-      body.append("rec_id", rec_id);
+      body.append("insumo_id", insumo_id);
       const headers = new Headers();
       headers.append("X-Requested-With", "fetch");
 
@@ -243,26 +274,34 @@ window.eliminarRegistro = (rec_id) => {
         headers,
         body,
       };
-      const respuesta = await fetch(url, config);
-      const data = await respuesta.text();
-      const { resultado } = data;
-      if (resultado == 1) {
-        Toast.fire({
-          icon: "success",
-          title: "Registro eliminado",
-        });
 
-        formReceptores.reset();
-        buscarreceptores();
-      } else {
-        Toast.fire({
-          icon: "error",
-          title: "Ocurrió un error",
-        });
+      const respuesta = await fetch(url, config);
+      const data = await respuesta.json();
+      const { mensaje, codigo, detalle } = data;
+      // console.log(data);
+      let icon = "";
+      switch (codigo) {
+        case 1:
+          Toast.fire({
+            icon: "success",
+            title: "registro Eliminado",
+          });
+          formInsumos.reset();
+          buscarInsumos();
+          break;
+        case 2:
+          icon: "warning", formInsumos.reset();
+          break;
+        case 3:
+          icon: "error", formInsumos.reset();
+        case 4:
+          icon: "error", formInsumos.reset();
+          console.log(detalle);
+        default:
+          break;
       }
     }
   });
 };
-
-formReceptores.addEventListener("submit", guardarreceptores);
-btnModificar.addEventListener("click", modificarreceptores);
+formInsumos.addEventListener("submit", guardarInsumos);
+btnModificar.addEventListener("click", modificarInsumos);

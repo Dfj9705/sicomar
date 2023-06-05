@@ -1,10 +1,12 @@
 <?php
 namespace Model;
-class Insumos extends ActiveRecord{
+
+class Insumos extends ActiveRecord
+{
 
     protected static $tabla = 'codemar_insumos_operaciones'; //nombre de la tablaX
-    protected static $columnasDB = ['INSUMO_DESC','INSUMO_UNIDAD','INSUMO_COLOR','INSUMO_SITUACION'];
-    protected static $idTabla = 'INSUMO_ID';
+    protected static $columnasDB = ['insumo_desc', 'insumo_unidad', 'insumo_color', 'insumo_situacion'];
+    protected static $idTabla = 'insumo_id';
 
     public $insumo_id;
     public $insumo_desc;
@@ -13,10 +15,11 @@ class Insumos extends ActiveRecord{
     public $insumo_situacion;
 
 
-    public function __construct($args = []){
+    public function __construct($args = [])
+    {
         $this->insumo_id = $args['insumo_id'] ?? null;
-        $this->insumo_desc = utf8_decode(mb_strtoupper(trim($args['emb_nombre']))) ??'';
-        $this->insumo_unidad = utf8_decode(mb_strtoupper(trim($args['insumo_unidad']))) ??'';
+        $this->insumo_desc = utf8_decode(mb_strtoupper(trim($args['insumo_desc']))) ?? '';
+        $this->insumo_unidad = utf8_decode(mb_strtoupper(trim($args['insumo_unidad']))) ?? '';
         $this->insumo_color = $args['insumo_color'] ?? null;
         $this->insumo_situacion = $args['insumo_situacion'] ?? '1';
     }
