@@ -63,31 +63,14 @@
                     </a>
                     <ul class="dropdown-menu  dropdown-menu-dark nav-index " id="dropwdownRevision">
                         <!-- <h6 class="dropdown-header">Información</h6> -->
-
-                        <li>
-                                <a class="dropdown-item nav-link text-white " href="/sicomar/insumos"><i class="ms-lg-0 ms-2 bi bi-cloudy me-2"></i>Insumos</a>
-                        </li>
-                        <li>
-                                <a class="dropdown-item nav-link text-white " href="/sicomar/operaciones"><i class="ms-lg-0 ms-2 bi bi-cloudy me-2"></i>Operaciones</a>
-                        </li>
-                        <li>
-                                <a class="dropdown-item nav-link text-white " href="/sicomar/medios"><i class="ms-lg-0 ms-2 bi bi-cloudy me-2"></i>Medios</a>
-                        </li>
-                        <li>
-                                <a class="dropdown-item nav-link text-white " href="/sicomar/receptores"><i class="ms-lg-0 ms-2 bi bi-cloudy me-2"></i>Receptores</a>
-                        </li>
-                        <li>
-                                <a class="dropdown-item nav-link text-white " href="/sicomar/tipo_embarcaciones"><i class="ms-lg-0 ms-2 bi bi-cloudy me-2"></i>Tipo de embracaciones</a>
-                        </li>
-                        <li>
-                                <a class="dropdown-item nav-link text-white " href="/sicomar/embarcaciones"><i class="ms-lg-0 ms-2 bi bi-cloudy me-2"></i>Embarcaciones</a>
-                        </li>
-                        <li>
-                                <a class="dropdown-item nav-link text-white " href="/sicomar/motores"><i class="ms-lg-0 ms-2 bi bi-cloudy me-2"></i>Motores</a>
-                        </li>
-                        <li>
-                                <a class="dropdown-item nav-link text-white " href="/sicomar/unidad_medida"><i class="ms-lg-0 ms-2 bi bi-cloudy me-2"></i>Unidad de Medida</a>
-                        </li>
+                        <li><a class="dropdown-item nav-link text-white " href="#"><i class="ms-lg-0 ms-2 bi bi-boxes me-2"></i>Insumos</a></li>
+                        <li><a class="dropdown-item nav-link text-white " href="#"> <i class="ms-lg-0 ms-2 bi bi-diagram-2 me-2"></i>Operaciones</a></li>
+                        <li><a class="dropdown-item nav-link text-white " href="#"> <i class="ms-lg-0 ms-2 bi bi-broadcast me-2"></i>Medios</a></li>
+                        <li><a class="dropdown-item nav-link text-white " href="#"> <i class="ms-lg-0 ms-2 bi bi-bullseye me-2"></i>Receptores</a></li>
+                        <li><a class="dropdown-item nav-link text-white " href="#"> <i class="ms-lg-0 ms-2 bi bi-node-plus me-2"></i>Tipos de Embarcaciones</a></li>
+                        <li><a class="dropdown-item nav-link text-white " href="#"> <i class="ms-lg-0 ms-2 bi bi-diagram-3 me-2"></i>Embarcaciones</a></li>
+                        <li><a class="dropdown-item nav-link text-white " href="#"> <i class="ms-lg-0 ms-2 bi bi-gear me-2"></i>Motores</a></li>
+                        <li><a class="dropdown-item nav-link text-white " href="#"> <i class="ms-lg-0 ms-2 bi bi-gear me-2"></i>Unidades de Medida</a></li>
                       
                       
                    
