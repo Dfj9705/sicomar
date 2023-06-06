@@ -18,7 +18,36 @@ use Controllers\InsumosController;
 $router = new Router();
 $router->setBaseURL('/sicomar');
 
-$router->get('/', [AppController::class, 'index']);
 
-// Comprueba y valida las rutas, que existan y les asigna las funciones del Controlador
+// aca estaran las rutas para el crud de Receptores
+
+
+$router->get('/receptores', [ReceptoresController::class, 'index']);
+$router->post('/API/receptores/guardar', [ReceptoresController::class, 'guardarAPI']);
+$router->get('/API/receptores/buscar', [ReceptoresController::class, 'buscarAPI']);
+$router->post('/API/receptores/modificar', [ReceptoresController::class, 'modificarAPI']);
+$router->post('/API/receptores/eliminar', [ReceptoresController::class, 'eliminarAPI']);
+
+
+// aca estaran las rutas para el Crud de Medios de Comunicacion
+$router->get('/medio', [MedioController::class, 'index']);
+
+
+// Aca estaran las rutas para el Crud de Patrullajes
+$router->get('/operaciones', [OperacionesController::class, 'index']);
+$router->post('/API/operaciones/guardar', [OperacionesController::class, 'guardarAPI']);
+$router->get('/API/operaciones/buscar', [OperacionesController::class, 'buscarAPI']);
+$router->post('/API/operaciones/modificar', [OperacionesController::class, 'modificarAPI']);
+$router->post('/API/operaciones/eliminar', [OperacionesController::class, 'eliminarAPI']);
+
+
+// aca estaran las rutas para el crud de insumos
+$router->get('/insumos', [InsumosController::class, 'index']);
+$router->post('/API/insumos/guardar', [InsumosController::class, 'guardarAPI']);
+$router->get('/API/insumos/buscar', [InsumosController::class, 'buscarAPI']);
+$router->post('/API/insumos/modificar', [InsumosController::class, 'modificarAPI']);
+$router->post('/API/insumos/eliminar', [InsumosController::class, 'eliminarAPI']);
+
+
+
 $router->comprobarRutas();
