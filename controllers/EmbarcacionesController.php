@@ -134,7 +134,4 @@ class EmbarcacionesController
             exit;
         }
     }
-<?php
-namespace Controllers;
-use Model\Embarcaciones;
-use MVC\Router;
+}

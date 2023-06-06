@@ -43,11 +43,7 @@ class ActiveRecord
     {
         $resultado = '';
         $id = static::$idTabla ?? 'id';
-<<<<<<< HEAD
         if (!is_null($this->$id)) {
-=======
-        if(!is_null($this->$id)) {
->>>>>>> a3a123f2337fa6743140a851600f0e2e621711f0
             // actualizar
             $resultado = $this->actualizar();
         } else {
@@ -67,8 +63,10 @@ class ActiveRecord
     }
 
     // Busca un registro por su id
-    public static function find($id) {
-        $query = "SELECT * FROM " . static::$tabla  ." WHERE id = ${id}";
+    public static function find($id)
+    {
+        $idQuery = static::$idTabla ?? 'id';
+        $query = "SELECT * FROM " . static::$tabla . " WHERE $idQuery = ${id}";
         $resultado = self::consultarSQL($query);
         return array_shift($resultado);
     }
@@ -86,20 +84,12 @@ class ActiveRecord
     {
         $query = "SELECT * FROM " . static::$tabla . " WHERE ${columna} ${condicion} '${valor}'";
         $resultado = self::consultarSQL($query);
-<<<<<<< HEAD
         return $resultado;
     }
 
     // SQL para Consultas Avanzadas.
     public static function SQL($consulta)
     {
-=======
-        return  $resultado ;
-    }
-
-    // SQL para Consultas Avanzadas.
-    public static function SQL($consulta) {
->>>>>>> a3a123f2337fa6743140a851600f0e2e621711f0
         $query = $consulta;
         $resultado = self::$db->query($query);
         return $resultado;
@@ -142,13 +132,8 @@ class ActiveRecord
         }
         $id = static::$idTabla ?? 'id';
 
-<<<<<<< HEAD
         $query = "UPDATE " . static::$tabla . " SET ";
         $query .= join(', ', $valores);
-=======
-        $query = "UPDATE " . static::$tabla ." SET ";
-        $query .=  join(', ', $valores );
->>>>>>> a3a123f2337fa6743140a851600f0e2e621711f0
         $query .= " WHERE " . $id . " = " . self::$db->quote($this->$id) . " ";
 
         // debuguear($query);
@@ -196,7 +181,6 @@ class ActiveRecord
         return $data;
     }
 
-<<<<<<< HEAD
 
     public static function fetchFirst($query)
     {
@@ -204,25 +188,13 @@ class ActiveRecord
         $respuesta = $resultado->fetchAll(PDO::FETCH_ASSOC);
         foreach ($respuesta as $value) {
             $data[] = array_change_key_case(array_map('utf8_encode', $value));
-=======
-        
-    public static function fetchFirst($query){
-        $resultado = self::$db->query($query);
-        $respuesta = $resultado->fetchAll(PDO::FETCH_ASSOC);
-        foreach ($respuesta as $value) {
-            $data[] = array_change_key_case( array_map( 'utf8_encode', $value) ); 
->>>>>>> a3a123f2337fa6743140a851600f0e2e621711f0
         }
         $resultado->closeCursor();
         return array_shift($data);
     }
 
-<<<<<<< HEAD
     protected static function crearObjeto($registro)
     {
-=======
-    protected static function crearObjeto($registro) {
->>>>>>> a3a123f2337fa6743140a851600f0e2e621711f0
         $objeto = new static;
 
         foreach ($registro as $key => $value) {
