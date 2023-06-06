@@ -202,7 +202,6 @@ const modificarreceptores = async (evento) => {
     btnGuardar.disabled = false;
     btnModificar.disabled = true;
     formReceptores.reset();
-
     divTabla.style.display = "";
   } catch (error) {
     console.log(error);
@@ -243,22 +242,42 @@ window.eliminarRegistro = (rec_id) => {
         headers,
         body,
       };
-      const respuesta = await fetch(url, config);
-      const data = await respuesta.text();
-      const { resultado } = data;
-      if (resultado == 1) {
-        Toast.fire({
-          icon: "success",
-          title: "Registro eliminado",
-        });
 
-        formReceptores.reset();
-        buscarreceptores();
-      } else {
-        Toast.fire({
-          icon: "error",
-          title: "Ocurrió un error",
-        });
+      const respuesta = await fetch(url, config);
+      const data = await respuesta.json();
+      const { mensaje, codigo, detalle } = data;
+
+      // const resultado = data.resultado;
+      let icon = "";
+      switch (codigo) {
+        case 1:
+          Toast.fire({
+            icon: "success",
+            title: "Registro eliminado",
+          });
+          formReceptores.reset;
+          buscarreceptores();
+
+          break;
+        case 2:
+          icon = "warning";
+          formReceptores.reset();
+
+          break;
+        case 3:
+          icon = "error";
+          formReceptores.reset();
+          break;
+        case 4:
+          icon = "error";
+
+          console.log(detalle);
+          formReceptores.reset();
+
+          break;
+
+        default:
+          break;
       }
     }
   });

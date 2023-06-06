@@ -1,7 +1,6 @@
 <?php
 namespace Controllers;
 
-use Exception;
 use Model\Receptores;
 use MVC\Router;
 
@@ -123,30 +122,47 @@ class ReceptoresController
         }
     } //fin de la funcion modificar
 
-    public function eliminarAPI()
+    public static function eliminarAPI()
     {
         getHeadersApi();
 
-        $id = $_POST['id'];
-        $valor = $_POST['rec_desc'];
 
-        $receptores = new Receptores($_POST);
-        $_POST['rec_situacion'] = 0;
-        $resultado = $receptores->eliminar();
-        if ($resultado['resultado'] == 1) {
+
+
+        //         $id = $_POST['id'];
+// $valor = $_POST['rec_desc'];
+        try {
+
+            $receptores = Receptores::find($_POST['rec_id']);
+            $receptores->rec_situacion = 0;
+            $resultado = $receptores->actualizar();
+
+
+            if ($resultado['resultado'] == 1) {
+                echo json_encode([
+                    "mensaje" => "Se modifico la operación exitosamente.",
+                    "codigo" => 1,
+                ]);
+
+            } else {
+                echo json_encode([
+                    "mensaje" => "Ocurrió  un error.",
+                    "codigo" => 0,
+                ]);
+
+            }
+        } catch (Exception $e) {
             echo json_encode([
-                "resultado" => 1
+                "detalle" => $e->getMessage(),
+                "mensaje" => "Ocurrió un error en base de datos",
+
+                "codigo" => 4,
             ]);
 
-        } else {
-            echo json_encode([
-                "resultado" => 0
-            ]);
+
 
         }
     }
-
-
-
 }
+
 ?>

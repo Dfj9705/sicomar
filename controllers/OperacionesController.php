@@ -1,152 +1,143 @@
 <?php
 namespace Controllers;
-// use Model\Patrullaje;
-use Models\Operaciones;
+
+use Exception;
+use Model\Operaciones;
+// use Model\TipoEmbarcacion;
 use MVC\Router;
 
+class OperacionesController
+{
+    public static function index(Router $router)
+    {
+        $router->render('operaciones/index', []);
 
-class OperacionesController {
-    public static function index(Router $router){
-        $router->render('operaciones/index',[]);
     }
-    public function guardarAPI(){
-        getHeadersApi();
 
+    public function guardarAPI()
+    {
+        getHeadersApi();
         try {
-           echo json_encode($_POST);
-           exit;
-            $operaciones = new Operaciones($_POST);
-        
-            $valor = $operaciones->tipo_desc;
+
+            $operacion = new Operaciones($_POST);
+            $resultado = $operacion->crear();
+
+
+            if ($resultado['resultado'] == 1) {
+                echo json_encode([
+                    "mensaje" => "El registro se guardó correctamente",
+                    "codigo" => 1,
+                ]);
+                exit;
+            } else {
+                echo json_encode([
+                    "mensaje" => "Error al guardar registro",
+                    "codigo" => 3,
+                ]);
+                exit;
+            }
+
+        } catch (Exception $e) {
+            echo json_encode([
+                "detalle" => $e->getMessage(),
+                "mensaje" => "Ocurrió un error en base de datos",
+                "codigo" => 4,
+            ]);
+            exit;
+        }
+    }
+    public static function buscarAPI()
+    {
+        // hasPermissionApi(['AMC_ADMIN']);
+        try {
+            getHeadersApi();
+            $operacion = Operaciones::fetchArray('SELECT * from codemar_tipos_operaciones where tipo_situacion = 1');
+            echo json_encode($operacion);
+        } catch (Exception $e) {
+            echo json_encode(["error" => $e->getMessage()]);
+        }
+
+
+
+
+    }
+
+    public function modificarAPI()
+    {
+        getHeadersApi();
+        try {
+
+
+            $tipo_id = $_POST['tipo_id'];
+            $valor = $_POST['tipo_desc'];
             $existe = Operaciones::fetchArray("SELECT * from codemar_tipos_operaciones where tipo_situacion = 1 AND tipo_desc = '$valor'");
-            if (count($existe)>0){
-               echo json_encode([
-                   "mensaje" => "El registro ya existe",
-                   "codigo" => 2, 
-               ]);
-               exit;
-            }
-             
-            $resultado = $operaciones->guardar();
-    
-            if($resultado['resultado'] == 1){
+
+            if (count($existe) > 0) {
                 echo json_encode([
-                    "mensaje" => "El registro se guardó",
+                    "mensaje" => "El valor no se modificó.",
+                    "codigo" => 2,
+                ]);
+                exit;
+            }
+            $embarcacion = new Operaciones($_POST);
+            $resultado = $embarcacion->actualizar();
+
+
+            if ($resultado['resultado'] == 1) {
+                echo json_encode([
+                    "mensaje" => "El registro se actualizó correctamente",
                     "codigo" => 1,
                 ]);
-                
-            }else{
+                exit;
+            } else {
                 echo json_encode([
-                    "mensaje" => "Ocurrió un error",
-                    "codigo" => 0,
-
+                    "mensaje" => "Error al guardar registro",
+                    "codigo" => 3,
                 ]);
-    
+                exit;
             }
+
         } catch (Exception $e) {
             echo json_encode([
-                "detalle" => $e->getMessage(),       
+                "detalle" => $e->getMessage(),
                 "mensaje" => "Ocurrió un error en base de datos",
-
                 "codigo" => 4,
             ]);
+            exit;
         }
-        
     }
-    public function buscarAPI(){
+    public static function eliminarAPI()
+    {
         getHeadersApi();
-        try{
-        $operaciones = Operaciones::where('tipo_situacion', '0','>');
-        echo json_encode($operaciones);
-        }catch (Exception $e){
-            echo json_encode([
-                "detalle" => $e->getMessage(),       
-                 ]);
+        // $id = $_GET['tipo_id'];
+        try {
+            $operacion = Operaciones::find($_POST['tipo_id']);
+            $operacion->tipo_situacion = 0;
+            $resultado = $operacion->actualizar();
 
 
-        }
-       
-    
-    }//fin de la funcion buscar 
-
-
-    public function modificarAPI(){
-        getHeadersApi();
-       try {
-
-        // $cambio = new Receptores($_POST);
-        // echo json_encode($cambio);
-        // exit;
-        
-
-
-$id = $_POST['id'];
-$valor = $_POST['tipo_desc'];
-
-
-
-
-            $existe = Operaciones::fetchfirst("SELECT * from codemar_tipos_operaciones where tipo_situacion = 1 AND tipo_desc = '$valor'");
-             
-            if (count($existe)>0){
-               echo json_encode([
-                   "mensaje" => "El valor no se modificó.",
-                   "codigo" => 2,
-               ]);
-               exit;
-            }
-    
-            // $cambio =  new Receptores ([
-            //     'rec_id' => $id,
-            //     'rec_desc' => $valor,
-            //     'rec_situacion' => "1" 
-            // ]);
-            $cambio = new Operaciones($_POST);
-            $cambiar = $cambio-> guardar();
-            if($cambiar){
+            if ($resultado['resultado'] == 1) {
                 echo json_encode([
-                    "mensaje" => "El registro se guardo",
+                    "mensaje" => "El registro se eliminó correctamente",
                     "codigo" => 1,
                 ]);
-                
-            }else{
+                exit;
+            } else {
                 echo json_encode([
-                    "mensaje" => "Ocurrió un error",
+                    "mensaje" => "Error al guardar registro",
                     "codigo" => 0,
                 ]);
-
+                exit;
             }
+
         } catch (Exception $e) {
             echo json_encode([
-                "detalle" => $e->getMessage(),       
+                "detalle" => $e->getMessage(),
                 "mensaje" => "Ocurrió un error en base de datos",
-
                 "codigo" => 4,
             ]);
-        }
-    }//fin de la funcion modificar
-
-    public function eliminarAPI(){
-        getHeadersApi();
-
-        $id = $_POST['id'];
-$valor = $_POST['rec_desc'];
-      
-        $operaciones = new Operaciones($_POST);
-        $_POST['tipo_situacion'] = 0;
-        $resultado = $operaciones->eliminar();
-        if($resultado['resultado'] == 1){
-            echo json_encode([
-                "resultado" => 1
-            ]);
-            
-        }else{
-            echo json_encode([
-                "resultado" => 0
-            ]);
-
+            exit;
         }
     }
+
 }
-
-?>

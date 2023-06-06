@@ -134,22 +134,7 @@ class EmbarcacionesController
             exit;
         }
     }
-
-    public static function eliminarAPI()
-    {
-        getHeadersApi();
-        $_POST['situacion'] = 0;
-        $embarcaciones = new Embarcaciones($_POST);
-        $resultado = $embarcaciones->guardar();
-        if ($resultado['resultado'] == 1) {
-            echo json_encode([
-                "resultado" => 1
-            ]);
-        } else {
-            echo json_encode([
-                "resultado" => 0
-            ]);
-        }
-    }
-}
-?>
+<?php
+namespace Controllers;
+use Model\Embarcaciones;
+use MVC\Router;

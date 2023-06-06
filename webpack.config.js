@@ -11,8 +11,7 @@ module.exports = {
     "js/receptores/index": "./src/js/receptores/index.js",
     "js/tipo/index": "./src/js/tipo/index.js",
     "js/operaciones/index": "./src/js/operaciones/index.js",
-    "js/insumos/index": "./src/js/insumos/index.js",
-    "js/embarcaciones/index": "./src/js/embarcaciones/index.js",
+    "js/medios/index": "./src/js/medios/index.js",
   },
   output: {
     filename: "[name].js",
